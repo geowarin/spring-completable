@@ -19,7 +19,7 @@ public class AsyncUtil {
         try {
             timeUnit.sleep(ThreadLocalRandom.current().nextInt(duration));
         } catch (InterruptedException e) {
-            throw new IllegalStateException(e);
+            Throwables.propagate(e);
         }
     }
 
