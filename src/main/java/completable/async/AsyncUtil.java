@@ -3,6 +3,8 @@ package completable.async;
 import com.google.common.base.Throwables;
 
 import java.time.Duration;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 public class AsyncUtil {
     static void sleep(Duration duration) {
@@ -11,5 +13,17 @@ public class AsyncUtil {
         } catch (InterruptedException e) {
             Throwables.propagate(e);
         }
+    }
+
+    public static void randomSleep(int duration, TimeUnit timeUnit) {
+        try {
+            timeUnit.sleep(ThreadLocalRandom.current().nextInt(duration));
+        } catch (InterruptedException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    public static String getThreadName() {
+        return Thread.currentThread().getName();
     }
 }

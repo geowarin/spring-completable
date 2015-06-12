@@ -1,5 +1,6 @@
 package completable;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import completable.async.CompletableExecutors;
 import completable.async.TimedCompletables;
 import org.apache.commons.logging.Log;
@@ -13,6 +14,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import java.time.Duration;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 @Configuration
 @EnableAsync
@@ -21,12 +23,14 @@ public class SpringAsyncConfig implements AsyncConfigurer {
 
     @Override
     public Executor getAsyncExecutor() {
-        return CompletableExecutors.completable(Executors.newFixedThreadPool(10));
+        ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("async-%d").build();
+        return CompletableExecutors.completable(Executors.newFixedThreadPool(10, threadFactory));
     }
 
     @Bean(name = "timeoutExecutor")
     public Executor timeoutExecutor() {
-        return TimedCompletables.timed(Executors.newFixedThreadPool(1), Duration.ofSeconds(1));
+        ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("timed-%d").build();
+        return TimedCompletables.timed(Executors.newFixedThreadPool(10, threadFactory), Duration.ofSeconds(2));
     }
 
     @Override

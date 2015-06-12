@@ -12,7 +12,6 @@ import java.util.function.Function;
 public class TimedCompletables {
     public static <T> CompletableFuture<T> failAfter(Duration duration) {
         return CompletableFuture.supplyAsync(() -> {
-            System.out.println("timeout - " + Thread.currentThread().getName());
             AsyncUtil.sleep(duration);
             throw new UncheckedTimeoutException("Time out " + duration);
         });

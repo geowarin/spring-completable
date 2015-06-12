@@ -1,5 +1,6 @@
 package completable.service;
 
+import completable.async.AsyncUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -19,29 +20,14 @@ public class AsyncService {
 
     @Async
     public CompletableFuture<String> asyncGreeting() {
-        return CompletableFuture.supplyAsync(() -> {
-            randomSleep(3, TimeUnit.SECONDS);
-            return random("Hello", "Salute", "Greetings");
-        });
+        AsyncUtil.randomSleep(3, TimeUnit.SECONDS);
+        return CompletableFuture.completedFuture(AsyncUtil.getThreadName() + " - " + random("Hello", "Salute", "Greetings"));
     }
 
     @Async("timeoutExecutor")
     public CompletableFuture<String> asyncTimeoutGreeting() {
-        System.out.println("service1 - " + Thread.currentThread().getName());
-
-        return CompletableFuture.supplyAsync(() -> {
-            System.out.println("service2 - " + Thread.currentThread().getName());
-            randomSleep(3, TimeUnit.SECONDS);
-            return random("Hello", "Salute", "Greetings");
-        });
-    }
-
-    private void randomSleep(int duration, TimeUnit timeUnit) {
-        try {
-            timeUnit.sleep(random.nextInt(duration));
-        } catch (InterruptedException e) {
-            throw new IllegalStateException(e);
-        }
+        AsyncUtil.randomSleep(3, TimeUnit.SECONDS);
+        return CompletableFuture.completedFuture(AsyncUtil.getThreadName() + " - " + random("Hello", "Salute", "Greetings"));
     }
 
     @SafeVarargs public final <T> T random(T... elements) {
