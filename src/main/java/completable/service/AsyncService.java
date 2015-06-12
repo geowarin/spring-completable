@@ -27,7 +27,7 @@ public class AsyncService {
         return CompletableFuture.completedFuture(result);
     }
 
-    @Async("timeoutExecutor")
+    @Async("timed")
     public CompletableFuture<String> asyncTimeoutGreeting() {
         AsyncUtil.randomSleep(3000, TimeUnit.MILLISECONDS);
         String result = AsyncUtil.getThreadName() + " - " + random(greetings);

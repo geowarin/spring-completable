@@ -26,6 +26,7 @@ public class ServiceProfiler {
         if (output instanceof CompletableFuture) {
             CompletableFuture future = (CompletableFuture) output;
             String debug = String.format("(%d ms)", stopWatch.getTotalTimeMillis());
+//            return future.thenApply(o -> CompletableFuture.completedFuture(o + debug));
             future.thenAccept(o -> System.out.println(o + " - " + debug));
         }
         return output;

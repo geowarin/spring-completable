@@ -27,7 +27,7 @@ public class SpringAsyncConfig implements AsyncConfigurer {
         return CompletableExecutors.completable(Executors.newFixedThreadPool(10, threadFactory));
     }
 
-    @Bean(name = "timeoutExecutor")
+    @Bean(name = "timed")
     public Executor timeoutExecutor() {
         ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("timed-%d").build();
         return TimedCompletables.timed(Executors.newFixedThreadPool(10, threadFactory), Duration.ofSeconds(2));
